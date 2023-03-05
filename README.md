@@ -1,4 +1,4 @@
-#VoiceRemoteApp 
+# VoiceRemoteApp 
 
 Android Studio + Arduino ESP32 based project for Hack the Hill Hackathon event held in University of Ottawa between March 3-5, 2023.
 
