@@ -75,13 +75,18 @@ public class SpeechToTextHandler extends AppCompatActivity {
             checkPermission();
         }
 
+        //linking the image and the TextView with their instantiation
         micIcon = (ImageView) findViewById(R.id.imgMic);
         commandText = (TextView) findViewById(R.id.textCommand);
+
+        //initializing the command string and the SpeechRecognizer
         commandTextStr = commandText.toString();
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(this);
 
+        //initializing the intent with the correct recognizer mode
         Intent speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 
+        //instantiating SpeechRecognizer and implementing abstract methods
         speechRecognizer.setRecognitionListener(new RecognitionListener() {
             @Override
             public void onReadyForSpeech(Bundle params) {
@@ -110,14 +115,15 @@ public class SpeechToTextHandler extends AppCompatActivity {
             @Override
             public void onError(int error) {}
 
+            //extracting and displaying the Speech to Text result to the TextView
             @Override
             public void onResults(Bundle results) {
                 ArrayList<String> resultsStringArrayList = results.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
                 commandTextStr = resultsStringArrayList.get(0);
                 commandText.setText(commandTextStr);
-                isTranscriptionDone = true;
             }
 
+            //extracting and displaying the partial Speech to Text result to TextView
             @Override
             public void onPartialResults(Bundle partialResults) {
                 ArrayList<String> partialResultsStringArrayList = partialResults.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
@@ -129,18 +135,23 @@ public class SpeechToTextHandler extends AppCompatActivity {
             public void onEvent(int eventType, Bundle params) {}
         });
 
-
+        //set onClickListener for the microphone image
         micIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //the SpeechRecignizer starts to listen when the button is clicked
                 speechRecognizer.startListening(speechIntent);
 
+                //Timer starts a countdown at the same time, for 5 seconds
                 speechTimer = new CountDownTimer(5000, 100) {
 
                     public void onTick(long millisUntilFinished) {
                         // Do nothing
                     }
 
+                    //once the speech to text is done, stop the listening process and
+                    //begin the string to bluetooth commands function
                     public void onFinish() {
                         speechRecognizer.stopListening();
                         transformCommandTextStr(commandTextStr);
@@ -150,12 +161,14 @@ public class SpeechToTextHandler extends AppCompatActivity {
         });
     }
 
+    //asks the system permission to use microphone
     private void checkPermission() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, REQUEST_RECORD_AUDIO_PERMISSION);
         }
     }
 
+    //handling the response of the permission
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -170,27 +183,30 @@ public class SpeechToTextHandler extends AppCompatActivity {
         }
     }
 
+    //String to bluetooth commands transform function
     public char[] transformCommandTextStr(String commandTextStr) {
         char[] res = new char[]{'0','0','0'};
 
+        //take the final output of the STT, trim and split it into an array of string
         String[] processedStr = commandTextStr.trim().toLowerCase().split(" ");
 
+        //if the length of the array is 1, and a keyword is detected
         if(processedStr.length == 1){
             if(commandMap.containsKey(processedStr[0])){
                 res[0] = commandMap.get(processedStr[0]).charValue();
                 res[1] = ' ';
                 res[2] = DEFAULT_BT_VALUE;
             }
-        }else if( processedStr.length > 1){
-            for(int i = processedStr.length-2; i>=0; i--){
-                if (commandMap.containsKey(processedStr[i])){
-                    if(numberMap.containsKey(processedStr[i+1])){
+        }else if( processedStr.length > 1){         //if the string is more than 1 word long
+            for(int i = processedStr.length-2; i>=0; i--){      //scan from right to left
+                if (commandMap.containsKey(processedStr[i])){   //if the word at position i is a keyword
+                    if(numberMap.containsKey(processedStr[i+1])){   //if the word at position i+1 is a number
                         res[0] = commandMap.get(processedStr[i]);
                         res[1] = ' ';
                         res[2] = numberMap.get(processedStr[i+1]);
 
                         break;
-                    }else{
+                    }else{      //if the word at position i+1 is another keyword
                         res[0] = commandMap.get(processedStr[0]);
                         res[1] = ' ';
                         res[2] = DEFAULT_BT_VALUE;
@@ -201,20 +217,5 @@ public class SpeechToTextHandler extends AppCompatActivity {
             }
         }
         return res;
-    }
-
-    private boolean contains(String[] arr, String target){
-        for( String str : arr){
-            if (str.equals(target)) return true;
-        }
-
-        return false;
-    }
-
-    private void resetCmdVars() {
-        this.commandTextStr = null;
-        this.cmdToTranslate = "null";
-        this.speechTimer = null;
-        this.lastElem = null;
     }
 }
