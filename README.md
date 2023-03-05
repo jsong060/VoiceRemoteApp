@@ -10,6 +10,7 @@ Android Studio + Arduino ESP32 based project for [Hack the Hill](https://tracker
   - [VoiceRemote App](#app)
   - [ESP32 BLE Server](#ble)
   - [ESP32 Steel-geared Servo System](#servo)
+- [Further information](#info)
 - [Team](#team)
 
 
@@ -48,6 +49,8 @@ The ESP32 board is programmed to host a [BLE](https://docs.espressif.com/project
 
 The ESP32 is also programmed to get the serial control input and translate that into a set of servo control signals for button interaction. The placement of the buttons can be customizable for possible future implementations, allowing up to multiple button interactions and different time intervals, potentially allowing generic application for various remote control devices. 
 
+## Further information <a name = "team"></a>
+[ChairIO (Voice-Automated Chair Controller)](https://devpost.com/software/chairio-voice-automated-chair-controller)
 
 
 ## Team Members <a name = "team"></a>
