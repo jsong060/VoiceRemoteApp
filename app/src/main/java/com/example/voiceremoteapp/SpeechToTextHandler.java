@@ -196,6 +196,8 @@ public class SpeechToTextHandler extends AppCompatActivity {
                 res[0] = commandMap.get(processedStr[0]).charValue();
                 res[1] = ' ';
                 res[2] = DEFAULT_BT_VALUE;
+
+                Log.d("Len of cmd = 1, no num", new String(res));
             }
         }else if( processedStr.length > 1){         //if the string is more than 1 word long
             for(int i = processedStr.length-2; i>=0; i--){      //scan from right to left
@@ -205,12 +207,14 @@ public class SpeechToTextHandler extends AppCompatActivity {
                         res[1] = ' ';
                         res[2] = numberMap.get(processedStr[i+1]);
 
+                        Log.d("Len of cmd = 2+, w/ num", new String(res));
                         break;
                     }else{      //if the word at position i+1 is another keyword
                         res[0] = commandMap.get(processedStr[0]);
                         res[1] = ' ';
                         res[2] = DEFAULT_BT_VALUE;
 
+                        Log.d("Len of cmd = 2+, no num", new String(res));
                         break;
                     }
                 }
