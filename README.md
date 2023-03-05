@@ -22,8 +22,8 @@ The project is tasked to provide a solution to the problem that many people with
 
 A design solution comprising of 5 cascading communicating components to achieve a voice operated, software+hardware driven mechanical system was layed out:
 
-- Command based voice recognition (implemented on Android Studio)
-- Text filtering/parsing and generating data packets containing control signals (implemented on Android Studio)
+- Command based voice recognition
+- Text filtering/parsing and generating data packets containing control signals 
 - Android Bluetooth Low Energy (BLE) client/peripheral system 
 - Arduino ESP32 Bluetooth Low Energy (BLE) server/center system
 - Mechanical servo system controlled by Arduino ESP32 
