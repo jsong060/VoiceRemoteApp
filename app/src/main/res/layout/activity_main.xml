@@ -4,24 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".SpeechToTextHandler">
 
 
-    <EditText
-        android:id="@+id/textbox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="143dp"
-        android:minHeight="48dp"
-        android:text="Hello world"
+    <ImageView
+        android:id="@+id/imgMic"
+        android:layout_width="128dp"
+        android:layout_height="96dp"
+        android:layout_marginStart="141dp"
+        android:layout_marginTop="175dp"
+        android:clickable="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_mic_24" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button" />
+    <TextView
+        android:id="@+id/textCommand"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="52dp"
+        android:layout_marginTop="76dp"
+        android:text="Commands will appear here"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgMic" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
